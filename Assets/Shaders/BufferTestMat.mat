@@ -28,6 +28,10 @@ Material:
         m_Texture: {fileID: 8400000, guid: a348fe2d588e6ba48b8e31d4143cb7ba, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_57d1576b6fe1414ab0e8f8c53f56e73f_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: e2e4ceec67fbd42358d4ea087e596953, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -44,10 +48,15 @@ Material:
     m_Floats:
     - _DepthThreshold: 1
     - _NormalThreshold: 1.5
-    - _OutlineScale: 3
+    - _OutlineScale: 5
     - _Robert_s_Cross_Multiplier: 1
     - _SteepAngleMultiplier: 1
     - _SteepAngleThreshold: 1
     m_Colors:
-    - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
+    - _LightingThreshold: {r: 0.35, g: 0.62, b: 0, a: 0}
+    - _Midtone: {r: 1, g: 0.63529414, b: 0, a: 0}
+    - _OutlineColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 0}
+    - _Ramped_Diffuse_Values: {r: 0.2, g: 0.4, b: 1, a: 0}
+    - _Shadow: {r: 1, g: 0.8443396, b: 0.9243064, a: 0}
+    - _ShadowScale: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []

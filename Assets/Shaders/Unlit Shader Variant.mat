@@ -40,10 +40,14 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
+    - _GlobalSpeed: 10
     - _QueueControl: 0
     - _Threshold: 0.652
     - _Threshold1: 0.163
     - _Threshold2: 1
+    - _WobbleAmount: 0
+    - _WobbleDistance: 1
+    - _WobbleFrequency: 5
     m_Colors:
     - _Highlight: {r: 1, g: 0.6367924, b: 0.6367924, a: 1}
     - _Shadow: {r: 0.7735849, g: 0.15690638, b: 0.15690638, a: 1}
