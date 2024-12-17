@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-2841423222109754468
+--- !u!114 &-5277940762054601094
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,11 +20,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Unlit Shader Variant
+  m_Name: Unlit Shader Variant Variant
   m_Shader: {fileID: -6465566751694194690, guid: b8d432284dc0842a79caae8f85403f2b,
     type: 3}
-  m_Parent: {fileID: -876546973899608171, guid: b8d432284dc0842a79caae8f85403f2b,
-    type: 3}
+  m_Parent: {fileID: 2100000, guid: c5c05b7567ade485683a0ae276ec7eac, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -43,14 +42,13 @@ Material:
     - _GlobalSpeed: 10
     - _QueueControl: 0
     - _Threshold: 0.652
-    - _Threshold1: 1
+    - _Threshold1: 0.163
     - _Threshold2: 1
     - _WobbleAmount: 0.001
-    - _WobbleDistance: 0.1
+    - _WobbleDistance: 1
     - _WobbleFrequency: 5
     m_Colors:
-    - _Highlight: {r: 1, g: 0.89778346, b: 0.5613208, a: 1}
-    - _Midtone: {r: 1, g: 0.8980393, b: 0.56078434, a: 0}
-    - _Shadow: {r: 0.9811321, g: 0.52577513, b: 0.22677112, a: 1}
-    - _Texture_Scale: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _Highlight: {r: 1, g: 0.14285713, b: 0, a: 1}
+    - _Midtone: {r: 0.6320754, g: 0, b: 0, a: 0}
+    - _Shadow: {r: 0.3962264, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
