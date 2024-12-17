@@ -1,5 +1,16 @@
 # HW 4: *3D Stylization*
 
+### Concept Art
+![image](https://github.com/user-attachments/assets/e7ed90a5-a8d4-4747-9203-32594d7c4eec)
+
+I painted a texture in procreate to use for this project. For the outlines I added noise distortion and breaks in the lines to mimic the reference. I made an inverted colors post process effect when the spacebar is pressed. I created a scene with a pizza I modeled in blender and changed the scale of the texture to vary the look of the different objects.
+
+### Video
+https://github.com/user-attachments/assets/d90c66d7-c9fc-4af7-ad92-45548651b30a
+
+
+
+
 ## Project Overview:
 In this assignment, you will use a 2D concept art piece as inspiration to create a 3D Stylized scene in Unity. This will give you the opportunity to explore stylized graphics techniques alongside non-photo-realistic (NPR) real-time rendering workflows in Unity.
 
