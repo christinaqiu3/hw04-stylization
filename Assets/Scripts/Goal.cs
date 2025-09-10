@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Goal : MonoBehaviour
 {
-    public AudioClip winSound;
+    public AudioClip goalSound;
     private AudioSource audioSource;
     private bool gameEnded = false;
 
@@ -27,17 +27,10 @@ public class Goal : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            gameEnded = true;
-            Debug.Log("You Win!");
+            if (goalSound != null && audioSource != null)
+                audioSource.PlayOneShot(goalSound);
 
-            if (winSound != null && audioSource != null)
-                audioSource.PlayOneShot(winSound);
-
-            // Show win UI (if you have one)
-            UIManager.Instance.ShowWinScreen();
-
-            // Reload scene after 3 seconds (optional)
-            Invoke("ReloadScene", 3f);
+            UIManager.Instance.AddScore(1);
         }
 
     }
