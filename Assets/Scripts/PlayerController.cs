@@ -43,5 +43,7 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(rightDirection * movementIntensity, ForceMode.Acceleration);
         if (Input.GetKey(KeyCode.A))
             rb.AddForce(-rightDirection * movementIntensity, ForceMode.Acceleration);
+        //if (Input.GetKey(KeyCode.E))
+
     }
 }

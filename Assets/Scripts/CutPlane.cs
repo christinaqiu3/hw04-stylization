@@ -5,12 +5,16 @@ using UnityEngine;
 public class CutPlane : MonoBehaviour
 {
     public Transform objectToCut;
+    public Vector3 cutPoint = Vector3.zero;
+    public Vector3 cutDirection = Vector3.forward;
 
     [Header("Frustum Settings")]
     public float xRatio = 1f;
     public float yRatio = 1f;
     public float fov = 60f;
     public float distance = 5f;
+
+    [Header("Audio")]
     public AudioClip cutSound;
     private AudioSource audioSource;
     
@@ -53,6 +57,8 @@ public class CutPlane : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             CutObject();
+            Debug.Log("cut");
+
         }
     }
 
@@ -87,9 +93,55 @@ public class CutPlane : MonoBehaviour
         if (!mf) return;
 
         Mesh originalMesh = mf.mesh;
+
+        Plane cutPlane = new Plane(
+            objectToCut.InverseTransformDirection(-cutDirection),
+            objectToCut.InverseTransformPoint(cutPoint)
+        );
+
         GeneratedMesh insideMesh = new GeneratedMesh();
         GeneratedMesh outsideMesh = new GeneratedMesh();
 
+        Vector3[] vertices = originalMesh.vertices;
+        Vector3[] normals = originalMesh.normals;
+        Vector2[] uvs = originalMesh.uv;
+
+        int subMeshCount = originalMesh.subMeshCount;
+
+        for (int subMesh = 0; subMesh < subMeshCount; subMesh++) {
+
+            int[] indices = originalMesh.GetTriangles(subMesh);
+
+            for (int i = 0; i < indices.Length; i += 3)
+            {
+
+                Vector3 v0 = objectToCut.TransformPoint(vertices[indices[i]]);
+                Vector3 v1 = objectToCut.TransformPoint(vertices[indices[i + 1]]);
+                Vector3 v2 = objectToCut.TransformPoint(vertices[indices[i + 2]]);
+
+                Vector3 n0 = normals[indices[i]];
+                Vector3 n1 = normals[indices[i + 1]];
+                Vector3 n2 = normals[indices[i + 2]];
+
+                Vector2 uv0 = uvs[indices[i]];
+                Vector2 uv1 = uvs[indices[i + 1]];
+                Vector2 uv2 = uvs[indices[i + 2]];
+
+                MeshTriangle tri = new MeshTriangle(
+                    new Vector3[] { v0, v1, v2 },
+                    new Vector3[] { n0, n1, n2 },
+                    new Vector2[] { uv0, uv1, uv2 },
+                    subMesh
+                );
+
+                // Classify by triangle center
+                Vector3 center = (v0 + v1 + v2) / 3f;
+                if (cutPlane.GetSide(center))
+                    insideMesh.AddTriangle(tri);
+                else
+                    outsideMesh.AddTriangle(tri);
+            }
+        }
         // --- Pseudocode ---
         // For each triangle in original mesh:
         // - Get vertices

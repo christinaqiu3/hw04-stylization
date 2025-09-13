@@ -6,13 +6,13 @@ using UnityEngine.SceneManagement;
 public class Goal : MonoBehaviour
 {
     public AudioClip goalSound;
-    private AudioSource audioSource;
+    public AudioSource audioSource;
     private bool gameEnded = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        // audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -25,13 +25,16 @@ public class Goal : MonoBehaviour
     {
         if (gameEnded) return;
 
-        if (other.CompareTag("Player"))
-        {
-            if (goalSound != null && audioSource != null)
+        //if (other.CompareTag("Player"))
+        //{
+            if (goalSound)
                 audioSource.PlayOneShot(goalSound);
 
             UIManager.Instance.AddScore(1);
-        }
+
+        Destroy(gameObject);
+
+        //}
 
     }
     void ReloadScene()
