@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     public Transform cameraTarget;
     public float movementIntensity = 10f;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -43,7 +44,5 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(rightDirection * movementIntensity, ForceMode.Acceleration);
         if (Input.GetKey(KeyCode.A))
             rb.AddForce(-rightDirection * movementIntensity, ForceMode.Acceleration);
-        //if (Input.GetKey(KeyCode.E))
-
     }
 }

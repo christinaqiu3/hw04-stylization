@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class CutPlane : MonoBehaviour
 {
-    public Transform objectToCut;
-    public Vector3 cutPoint = Vector3.zero;
-    public Vector3 cutDirection = Vector3.forward;
 
     [Header("Frustum Settings")]
     public float xRatio = 1f;
@@ -16,7 +13,7 @@ public class CutPlane : MonoBehaviour
 
     [Header("Audio")]
     public AudioClip cutSound;
-    private AudioSource audioSource;
+    public AudioSource audioSource;
     
     private Vector3 leftTopFrustum, rightTopFrustum, leftBottomFrustum, rightBottomFrustum;
 
@@ -25,27 +22,7 @@ public class CutPlane : MonoBehaviour
 
     void Start()
     {
-        audioSource = gameObject.AddComponent<AudioSource>();
-        // Plane cutPlane = new Plane(
-        //     objectToCut.InverseTransformDirection(-cutDirection),
-        //     objectToCut.InverseTransformPoint(cutPoint)
-        // );
-
-        // if (vertices.Count > 0)
-        // {
-        //     bool isOnPositiveSide = cutPlane.GetSide(vertices[0]);
-        //     Debug.Log("First vertex is on positive side? " + isOnPositiveSide);
-        // }
-
-        // if (vertices.Count > 0)
-        // {
-        //     Vector3 centerPosition = Vector3.zero;
-        //     foreach (var v in vertices)
-        //         centerPosition += v;
-        //     centerPosition /= vertices.Count;
-
-        //     Debug.Log("Center of vertices: " + centerPosition);
-        // }
+        // audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -56,7 +33,7 @@ public class CutPlane : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            CutObject();
+            TryCutObject();
             Debug.Log("cut");
 
         }
@@ -84,84 +61,39 @@ public class CutPlane : MonoBehaviour
         bottomPlane = new Plane(camPos, leftBottomFrustum, rightBottomFrustum);
     }
 
-    void CutObject()
+    void TryCutObject()
     {
         if (cutSound) audioSource.PlayOneShot(cutSound);
-        if (!objectToCut) return;
 
-        MeshFilter mf = objectToCut.GetComponent<MeshFilter>();
-        if (!mf) return;
+        GameObject[] candidates = GameObject.FindGameObjectsWithTag("Cuttable");
 
-        Mesh originalMesh = mf.mesh;
+        for (int i = 0; i < candidates.Length; i++)
+        {
+            GameObject current = candidates[i];
 
-        Plane cutPlane = new Plane(
-            objectToCut.InverseTransformDirection(-cutDirection),
-            objectToCut.InverseTransformPoint(cutPoint)
-        );
+            // Cut with left plane
+            GameObject result = Cutter.Cut(current, GetPlaneContactPoint(leftPlane, current), leftPlane.normal);
+            if (result != null) current = result;
 
-        GeneratedMesh insideMesh = new GeneratedMesh();
-        GeneratedMesh outsideMesh = new GeneratedMesh();
+            // Cut with right plane
+            result = Cutter.Cut(current, GetPlaneContactPoint(rightPlane, current), rightPlane.normal);
+            if (result != null) current = result;
 
-        Vector3[] vertices = originalMesh.vertices;
-        Vector3[] normals = originalMesh.normals;
-        Vector2[] uvs = originalMesh.uv;
+            // Cut with top plane
+            result = Cutter.Cut(current, GetPlaneContactPoint(topPlane, current), topPlane.normal);
+            if (result != null) current = result;
 
-        int subMeshCount = originalMesh.subMeshCount;
-
-        for (int subMesh = 0; subMesh < subMeshCount; subMesh++) {
-
-            int[] indices = originalMesh.GetTriangles(subMesh);
-
-            for (int i = 0; i < indices.Length; i += 3)
-            {
-
-                Vector3 v0 = objectToCut.TransformPoint(vertices[indices[i]]);
-                Vector3 v1 = objectToCut.TransformPoint(vertices[indices[i + 1]]);
-                Vector3 v2 = objectToCut.TransformPoint(vertices[indices[i + 2]]);
-
-                Vector3 n0 = normals[indices[i]];
-                Vector3 n1 = normals[indices[i + 1]];
-                Vector3 n2 = normals[indices[i + 2]];
-
-                Vector2 uv0 = uvs[indices[i]];
-                Vector2 uv1 = uvs[indices[i + 1]];
-                Vector2 uv2 = uvs[indices[i + 2]];
-
-                MeshTriangle tri = new MeshTriangle(
-                    new Vector3[] { v0, v1, v2 },
-                    new Vector3[] { n0, n1, n2 },
-                    new Vector2[] { uv0, uv1, uv2 },
-                    subMesh
-                );
-
-                // Classify by triangle center
-                Vector3 center = (v0 + v1 + v2) / 3f;
-                if (cutPlane.GetSide(center))
-                    insideMesh.AddTriangle(tri);
-                else
-                    outsideMesh.AddTriangle(tri);
-            }
+            // Cut with bottom plane
+            result = Cutter.Cut(current, GetPlaneContactPoint(bottomPlane, current), bottomPlane.normal);
+            if (result != null) current = result;
         }
-        // --- Pseudocode ---
-        // For each triangle in original mesh:
-        // - Get vertices
-        // - Test if inside all planes
-        // - If inside → add to insideMesh
-        // - Else → add to outsideMesh
-        // (TODO triangle clipping logic)
+    }
 
-        // For now, I just demonstrate separation by duplicating mesh
-        mf.mesh = insideMesh.GetGeneratedMesh();
-
-        GameObject outsideObject = new GameObject(objectToCut.name + "_CutPiece");
-        outsideObject.transform.position = objectToCut.position;
-        outsideObject.transform.rotation = objectToCut.rotation;
-
-        MeshFilter newMF = outsideObject.AddComponent<MeshFilter>();
-        newMF.mesh = outsideMesh.GetGeneratedMesh();
-
-        MeshRenderer newMR = outsideObject.AddComponent<MeshRenderer>();
-        newMR.sharedMaterial = objectToCut.GetComponent<MeshRenderer>().sharedMaterial;
+    Vector3 GetPlaneContactPoint(Plane plane, GameObject obj)
+    {
+        Vector3 center = obj.GetComponent<Renderer>().bounds.center;
+        float distanceToPlane = plane.GetDistanceToPoint(center);
+        return center - plane.normal * distanceToPlane; // project center onto plane
     }
 
     void OnDrawGizmos()

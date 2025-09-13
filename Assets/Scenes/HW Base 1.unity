@@ -443,9 +443,8 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
-  - component: {fileID: 330585549}
-  - component: {fileID: 330585551}
   - component: {fileID: 330585550}
+  - component: {fileID: 330585551}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -588,26 +587,6 @@ MonoBehaviour:
   cameraTarget: {fileID: 1501816197}
   mouseSensitivity: 3
   maxLookAngle: 80
---- !u!114 &330585549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330585543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 223938af6747e4a22a2a070e3d449b1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectToCut: {fileID: 762286362}
-  cutPoint: {x: 0, y: 0, z: 0}
-  cutDirection: {x: 0, y: 0, z: 1}
-  xRatio: 1
-  yRatio: 1
-  fov: 60
-  distance: 5
-  cutSound: {fileID: 8300000, guid: b546801b5c601464a8ce75b9a3a8533d, type: 3}
 --- !u!114 &330585550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -620,34 +599,108 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 223938af6747e4a22a2a070e3d449b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToCut: {fileID: 979161551}
-  cutPoint: {x: 0, y: 0, z: 0}
-  cutDirection: {x: 0, y: 0, z: 1}
   xRatio: 1
   yRatio: 1
-  fov: 60
+  fov: 30
   distance: 5
-  cutSound: {fileID: 0}
---- !u!114 &330585551
-MonoBehaviour:
+  cutSound: {fileID: 8300000, guid: b546801b5c601464a8ce75b9a3a8533d, type: 3}
+  audioSource: {fileID: 330585551}
+--- !u!82 &330585551
+AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 223938af6747e4a22a2a070e3d449b1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectToCut: {fileID: 887243008}
-  cutPoint: {x: 0, y: 0, z: 0}
-  cutDirection: {x: 0, y: 0, z: 1}
-  xRatio: 1
-  yRatio: 1
-  fov: 60
-  distance: 5
-  cutSound: {fileID: 0}
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1075,7 +1128,7 @@ GameObject:
   - component: {fileID: 762286359}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Cuttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1255,7 +1308,7 @@ GameObject:
   - component: {fileID: 887243005}
   m_Layer: 0
   m_Name: Cube (4)
-  m_TagString: Untagged
+  m_TagString: Cuttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1644,7 +1697,7 @@ GameObject:
   - component: {fileID: 979161548}
   m_Layer: 0
   m_Name: Cube (5)
-  m_TagString: Untagged
+  m_TagString: Cuttable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
