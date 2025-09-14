@@ -70,24 +70,42 @@ public class CutPlane : MonoBehaviour
         for (int i = 0; i < candidates.Length; i++)
         {
             GameObject current = candidates[i];
+            GameObject insideMesh = current;
 
             // Cut with left plane
-            GameObject result = Cutter.Cut(current, GetPlaneContactPoint(leftPlane, current), leftPlane.normal);
-            if (result != null) current = result;
+            GameObject rightPiece = Cutter.Cut(insideMesh, GetPlaneContactPoint(leftPlane, insideMesh), leftPlane.normal);
+            if (rightPiece != null)
+            {
+                insideMesh = insideMesh; // insideMesh already updated to left side
+                // Optionally do something with rightPiece (e.g., leave it in scene)
+            }
 
             // Cut with right plane
-            result = Cutter.Cut(current, GetPlaneContactPoint(rightPlane, current), rightPlane.normal);
-            if (result != null) current = result;
+            rightPiece = Cutter.Cut(insideMesh, GetPlaneContactPoint(rightPlane, insideMesh), rightPlane.normal);
+            if (rightPiece != null)
+            {
+                insideMesh = insideMesh;
+            }
 
             // Cut with top plane
-            result = Cutter.Cut(current, GetPlaneContactPoint(topPlane, current), topPlane.normal);
-            if (result != null) current = result;
+            rightPiece = Cutter.Cut(insideMesh, GetPlaneContactPoint(topPlane, insideMesh), topPlane.normal);
+            if (rightPiece != null)
+            {
+                insideMesh = insideMesh;
+            }
 
             // Cut with bottom plane
-            result = Cutter.Cut(current, GetPlaneContactPoint(bottomPlane, current), bottomPlane.normal);
-            if (result != null) current = result;
+            rightPiece = Cutter.Cut(insideMesh, GetPlaneContactPoint(bottomPlane, insideMesh), bottomPlane.normal);
+            if (rightPiece != null)
+            {
+                insideMesh = insideMesh;
+            }
+            
+            // if (current != null)
+            //     Destroy(current);
         }
     }
+
 
     Vector3 GetPlaneContactPoint(Plane plane, GameObject obj)
     {
