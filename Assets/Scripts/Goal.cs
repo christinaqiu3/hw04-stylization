@@ -25,8 +25,8 @@ public class Goal : MonoBehaviour
     {
         if (gameEnded) return;
 
-        //if (other.CompareTag("Player"))
-        //{
+        if (other.CompareTag("Player"))
+        {
             if (goalSound)
                 audioSource.PlayOneShot(goalSound);
 
@@ -34,7 +34,7 @@ public class Goal : MonoBehaviour
 
         Destroy(gameObject);
 
-        //}
+        }
 
     }
     void ReloadScene()
