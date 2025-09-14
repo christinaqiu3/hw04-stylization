@@ -100,3 +100,7 @@ InitTestScene*.unity*
 
 Assets/TextMesh*Pro/
 **/TextMesh*Pro/**
+
+# Ignore Unity + .NET build artifacts
+[Oo]bj/
+[Bb]in/
