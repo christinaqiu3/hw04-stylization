@@ -72,6 +72,10 @@ public class Cutter : MonoBehaviour
         }
         originalGameObject.GetComponent<MeshRenderer>().materials = mats;
 
+        // CHANGE: Set tag and layer to "Cuttable"
+        originalGameObject.tag = "Cuttable";
+        originalGameObject.layer = LayerMask.NameToLayer("Cuttable");
+
         GameObject right = new GameObject();
         right.transform.position = originalGameObject.transform.position;
         right.transform.rotation = originalGameObject.transform.rotation;
@@ -100,6 +104,8 @@ public class Cutter : MonoBehaviour
 
         isBusy = false;
 
+        // CHANGE: Set tag and layer to "Cuttable"
+        right.tag = "Cuttable";
         right.layer = LayerMask.NameToLayer("Cuttable");
 
         return right;
