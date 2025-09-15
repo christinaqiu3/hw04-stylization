@@ -18,7 +18,6 @@ public class DynamicFrustumTrigger : MonoBehaviour
         meshFilter.mesh = frustumMesh;
         meshCollider.sharedMesh = frustumMesh;
 
-        // Make sure this object has a Rigidbody (required for trigger events)
         if (!TryGetComponent<Rigidbody>(out Rigidbody rb))
         {
             rb = gameObject.AddComponent<Rigidbody>();
