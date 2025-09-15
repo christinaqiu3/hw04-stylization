@@ -13,7 +13,7 @@ public class Cutter : MonoBehaviour
     private static bool isBusy;
     private static Mesh originalMesh;
 
-    public static GameObject Cut(GameObject originalGameObject, Vector3 contactPoint, Vector3 cutNormal)
+    public static GameObject Cut(GameObject originalGameObject, Vector3 contactPoint, Vector3 cutNormal, bool toDelete = false)
     {
         if (isBusy)
             return null;
@@ -72,11 +72,14 @@ public class Cutter : MonoBehaviour
         }
         originalGameObject.GetComponent<MeshRenderer>().materials = mats;
 
+        // CHANGE: Rename the original object to indicate it's a cut result
+        originalGameObject.name = toDelete ? "[TO_DELETE]_" + originalGameObject.name : "[CUT_RESULT]_" + originalGameObject.name;
+
         // CHANGE: Set tag and layer to "Cuttable"
         originalGameObject.tag = "Cuttable";
         originalGameObject.layer = LayerMask.NameToLayer("Cuttable");
 
-        GameObject right = new GameObject();
+        GameObject right = new GameObject(toDelete ? "[TO_DELETE]_" + originalGameObject.name + "_RIGHT" : "[CUT_RESULT]_" + originalGameObject.name + "_RIGHT");
         right.transform.position = originalGameObject.transform.position;
         right.transform.rotation = originalGameObject.transform.rotation;
         right.transform.localScale = originalGameObject.transform.localScale;
@@ -99,8 +102,6 @@ public class Cutter : MonoBehaviour
 
         var rightRigidbody = right.AddComponent<Rigidbody>();
         rightRigidbody.isKinematic = true;
-
-        right.name = originalGameObject.name + Random.Range(0, 9999);
 
         isBusy = false;
 
