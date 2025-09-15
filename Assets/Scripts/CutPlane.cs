@@ -21,16 +21,21 @@ public class CutPlane : MonoBehaviour
 
     private Plane leftPlane, rightPlane, topPlane, bottomPlane;
 
-    // Stores cut geometry for later placement
-    private List<GameObject> storedInsidePieces = new List<GameObject>();
+    private List<StoredPiece> storedInsidePieces = new List<StoredPiece>();// Stores cut geometry for later placement
     
     public List<GameObject> objectsInsideFrustum = new List<GameObject>();
+
+    [System.Serializable]
+    public class StoredPiece
+    {
+        public GameObject prefab;
+        public Vector3 relativePosition;
+        public Quaternion relativeRotation;
+    }
 
 
     void Start()
     {
-        // audioSource = gameObject.AddComponent<AudioSource>();
-
         CollisionChecker[] checkers = GetComponentsInChildren<CollisionChecker>();
         foreach (var checker in checkers)
         {
@@ -38,7 +43,6 @@ public class CutPlane : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         UpdateFrustumCorners();
@@ -92,6 +96,16 @@ public class CutPlane : MonoBehaviour
         if (cutSound) audioSource.PlayOneShot(cutSound);
 
         storedInsidePieces.Clear(); // Clear any previous stored selection
+        // Clean up previous stored copies (destroy the inactive GameObjects)
+        if (storedInsidePieces != null)
+        {
+            foreach (var sp in storedInsidePieces)
+            {
+                if (sp != null && sp.prefab != null)
+                    Destroy(sp.prefab);
+            }
+            storedInsidePieces.Clear();
+        }
 
         // GameObject[] candidates = GameObject.FindGameObjectsWithTag("Cuttable");
 
@@ -119,13 +133,13 @@ public class CutPlane : MonoBehaviour
 
             // Make a duplicate of the object before cutting
             GameObject originalCopy = Instantiate(current);
+            originalCopy.name = current.name + "_StoredCopy";
             originalCopy.transform.SetPositionAndRotation(current.transform.position, current.transform.rotation);
             originalCopy.transform.localScale = current.transform.localScale;
 
-            // === IDK IF THIS IS RIGHT END === 
-
             // Cut with left plane
             GameObject rightPiece = Cutter.Cut(insideMesh, GetPlaneContactPoint(leftPlane, insideMesh), leftPlane.normal, true);
+            //Debug.DrawLine(transform.position, GetPlaneContactPoint(leftPlane, insideMesh), Color.red, 2f);
             // Cut with right plane
             rightPiece = Cutter.Cut(insideMesh, GetPlaneContactPoint(rightPlane, insideMesh), rightPlane.normal, true);
             // Cut with top plane
@@ -134,11 +148,11 @@ public class CutPlane : MonoBehaviour
             rightPiece = Cutter.Cut(insideMesh, GetPlaneContactPoint(bottomPlane, insideMesh), bottomPlane.normal, true);
 
             // === IDK IF THIS IS RIGHT === 
-            Destroy(current); // Remove cut version from scene
-            GameObject restored = Instantiate(originalCopy); // Restore original
-            restored.SetActive(true);
-            restored.tag = "Cuttable";
-            Destroy(originalCopy);
+            //Destroy(current); // Remove cut version from scene
+            // GameObject restored = Instantiate(originalCopy); // Restore original
+            // restored.SetActive(true);
+            // restored.tag = "Cuttable";
+            // Destroy(originalCopy);
             // === IDK IF THIS IS RIGHT END === 
 
             if (insideMesh != null)
@@ -149,8 +163,15 @@ public class CutPlane : MonoBehaviour
                 GameObject copy = Instantiate(insideMesh);
                 copy.name = insideMesh.name + "_StoredCopy";
                 copy.transform.SetPositionAndRotation(insideMesh.transform.position, insideMesh.transform.rotation);
-                storedInsidePieces.Add(copy);
+                
                 copy.SetActive(false);
+
+                // Build a StoredPiece with camera-relative transform
+                StoredPiece spNew = new StoredPiece();
+                spNew.prefab = copy;
+                spNew.relativePosition = Camera.main.transform.InverseTransformPoint(copy.transform.position);
+                spNew.relativeRotation = Quaternion.Inverse(Camera.main.transform.rotation) * copy.transform.rotation;
+                storedInsidePieces.Add(spNew);
             }
         }
         GameObject[] cutResults = GameObject.FindGameObjectsWithTag("Cuttable");
@@ -160,12 +181,11 @@ public class CutPlane : MonoBehaviour
             {
                 Destroy(obj);
             }
-        }
+        }      
     }
     void PasteStoredGeometry()
     {
         if (pasteSound) audioSource.PlayOneShot(pasteSound);
-        GameObject[] candidates = GameObject.FindGameObjectsWithTag("Cuttable");
 
         foreach (GameObject current in objectsInsideFrustum)
         {
@@ -173,32 +193,58 @@ public class CutPlane : MonoBehaviour
             Renderer rend = current.GetComponent<Renderer>();
             GameObject insideMesh = current;
 
-            // Cut with left plane
-            insideMesh = Cutter.Cut(insideMesh, GetPlaneContactPoint(leftPlane, insideMesh), leftPlane.normal);
-            // Cut with right plane
-            insideMesh = Cutter.Cut(insideMesh, GetPlaneContactPoint(rightPlane, insideMesh), rightPlane.normal);
-            // Cut with top plane
-            insideMesh = Cutter.Cut(insideMesh, GetPlaneContactPoint(topPlane, insideMesh), topPlane.normal);
-            // Cut with bottom plane
-            insideMesh = Cutter.Cut(insideMesh, GetPlaneContactPoint(bottomPlane, insideMesh), bottomPlane.normal);
+            // Collect objects overlapping frustumCollider
+            // List<GameObject> candidates = new List<GameObject>();
+            // Collider[] overlaps = Physics.OverlapBox(
+            //     frustumCollider.bounds.center,
+            //     frustumCollider.bounds.extents,
+            //     frustumCollider.transform.rotation,
+            //     LayerMask.GetMask("Cuttable")
+            // );
 
-            if (insideMesh != null)
-            {
-                // Store a copy BEFORE destroying
-                GameObject copy = Instantiate(insideMesh);
-                copy.SetActive(false);
-                storedInsidePieces.Add(copy);
-            }
-            Destroy(current);
+            // foreach (Collider col in overlaps)
+            // {
+            //     GameObject curr = col.gameObject;
+            //     if (!candidates.Contains(curr))
+            //         candidates.Add(curr);
+            // }
+
+            // Make a duplicate of the object before cutting
+            GameObject originalCopy = Instantiate(current);
+            originalCopy.transform.SetPositionAndRotation(current.transform.position, current.transform.rotation);
+            originalCopy.transform.localScale = current.transform.localScale;
+
+            // Cut with left plane
+            GameObject rightPiece = Cutter.Cut(insideMesh, GetPlaneContactPoint(leftPlane, insideMesh), leftPlane.normal);
+            // Cut with right plane
+            rightPiece = Cutter.Cut(insideMesh, GetPlaneContactPoint(rightPlane, insideMesh), rightPlane.normal);
+            // Cut with top plane
+            rightPiece = Cutter.Cut(insideMesh, GetPlaneContactPoint(topPlane, insideMesh), topPlane.normal);
+            // Cut with bottom plane
+            rightPiece = Cutter.Cut(insideMesh, GetPlaneContactPoint(bottomPlane, insideMesh), bottomPlane.normal);
+
+            // === IDK IF THIS IS RIGHT ===
+            // Destroy(current); // Remove cut version from scene
+            // GameObject restored = Instantiate(originalCopy); // Restore original
+            // restored.SetActive(true);
+            // restored.tag = "Cuttable";
+            Destroy(originalCopy);
+            // === IDK IF THIS IS RIGHT END === 
+            Destroy(rightPiece);
+            Destroy(insideMesh);
         }
 
-        foreach (GameObject piece in storedInsidePieces)
+        foreach (StoredPiece sp in storedInsidePieces)
         {
-            if (piece == null) continue;
-            piece.SetActive(true);
+            if (sp == null) continue;
 
-            piece.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 2f;
-            piece.transform.rotation = Camera.main.transform.rotation;
+            GameObject pastedPiece = Instantiate(sp.prefab);
+            pastedPiece.SetActive(true);
+            // Apply relative transform to current camera position/rotation
+            pastedPiece.transform.position = Camera.main.transform.TransformPoint(sp.relativePosition);
+            pastedPiece.transform.rotation = Camera.main.transform.rotation * sp.relativeRotation;
+            pastedPiece.tag = "Cuttable";
+            pastedPiece.layer = LayerMask.NameToLayer("Cuttable");
         }
     }
 
@@ -217,10 +263,10 @@ public class CutPlane : MonoBehaviour
             return obj.transform.position; // fallback
         }
 
-        return rend.bounds.center; 
-        // Vector3 center = obj.GetComponent<Renderer>().bounds.center;
-        // float distanceToPlane = plane.GetDistanceToPoint(center);
-        // return center - plane.normal * distanceToPlane; // project center onto plane
+        //return rend.bounds.center; 
+        Vector3 center = obj.GetComponent<Renderer>().bounds.center;
+        float distanceToPlane = plane.GetDistanceToPoint(center);
+        return center - plane.normal * distanceToPlane; // project center onto plane
     }
 
     void OnDrawGizmos()
