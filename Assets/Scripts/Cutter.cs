@@ -79,6 +79,7 @@ public class Cutter : MonoBehaviour
         originalGameObject.tag = "Cuttable";
         originalGameObject.layer = LayerMask.NameToLayer("Cuttable");
 
+        // CHANGE: Name the new object depending on whether it's to be deleted
         GameObject right = new GameObject(toDelete ? "[TO_DELETE]_" + originalGameObject.name + "_RIGHT" : "[CUT_RESULT]_" + originalGameObject.name + "_RIGHT");
         right.transform.position = originalGameObject.transform.position;
         right.transform.rotation = originalGameObject.transform.rotation;

@@ -224,7 +224,7 @@ public class CutPlane : MonoBehaviour
             rightPiece = Cutter.Cut(insideMesh, GetPlaneContactPoint(bottomPlane, insideMesh), bottomPlane.normal);
 
             // === IDK IF THIS IS RIGHT ===
-            // Destroy(current); // Remove cut version from scene
+            Destroy(current); // Remove cut version from scene
             // GameObject restored = Instantiate(originalCopy); // Restore original
             // restored.SetActive(true);
             // restored.tag = "Cuttable";
@@ -240,6 +240,11 @@ public class CutPlane : MonoBehaviour
 
             GameObject pastedPiece = Instantiate(sp.prefab);
             pastedPiece.SetActive(true);
+            var cols = pastedPiece.GetComponents<MeshCollider>();
+            for (int i = 0; i < cols.Length - 1; i++)
+            {
+                Destroy(cols[i]);
+            }
             // Apply relative transform to current camera position/rotation
             pastedPiece.transform.position = Camera.main.transform.TransformPoint(sp.relativePosition);
             pastedPiece.transform.rotation = Camera.main.transform.rotation * sp.relativeRotation;
