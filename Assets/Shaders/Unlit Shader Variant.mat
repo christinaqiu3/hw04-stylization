@@ -49,8 +49,8 @@ Material:
     - _WobbleDistance: 0.1
     - _WobbleFrequency: 5
     m_Colors:
-    - _Highlight: {r: 1, g: 0.89778346, b: 0.5613208, a: 1}
-    - _Midtone: {r: 1, g: 0.8980393, b: 0.56078434, a: 0}
-    - _Shadow: {r: 1, g: 0.8666667, b: 0.5372549, a: 1}
+    - _Highlight: {r: 1, g: 0.9793022, b: 0.8160377, a: 1}
+    - _Midtone: {r: 1, g: 0.9793022, b: 0.8160377, a: 1}
+    - _Shadow: {r: 1, g: 0.9793022, b: 0.8160377, a: 1}
     - _Texture_Scale: {r: 0.5, g: 0.5, b: 0, a: 0}
   m_BuildTextureStacks: []
