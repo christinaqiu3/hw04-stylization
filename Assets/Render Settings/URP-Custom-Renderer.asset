@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 552c866e32d5f734daec12e70f016d2c, type: 3}
   m_Name: NormalFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   normalsLayerMask:
     serializedVersion: 2
     m_Bits: 55
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8faec35144280c146ac2395f7d7187de, type: 3}
   m_Name: FullScreenFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     renderPassEvent: 550
     material: {fileID: 2100000, guid: 3d71df0145b4d47149226983e0e79c29, type: 2}

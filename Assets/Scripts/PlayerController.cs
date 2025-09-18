@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     public Transform cameraTarget;
     public float movementIntensity = 10f;
+    public float jumpIntensity = 5f;
     
     // Start is called before the first frame update
     void Start()
@@ -29,10 +30,12 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 forwardDirection = cameraTarget.forward;
         Vector3 rightDirection = cameraTarget.right;
+        Vector3 upDirection = cameraTarget.up;
 
         // Flatten so we only move on XZ plane
         forwardDirection.y = 0;
         rightDirection.y = 0;
+        
         forwardDirection.Normalize();
         rightDirection.Normalize();
 
@@ -44,5 +47,7 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(rightDirection * movementIntensity, ForceMode.Acceleration);
         if (Input.GetKey(KeyCode.A))
             rb.AddForce(-rightDirection * movementIntensity, ForceMode.Acceleration);
+        if (Input.GetKeyDown(KeyCode.Space))
+            rb.AddForce(Vector3.up, ForceMode.Impulse); 
     }
 }
