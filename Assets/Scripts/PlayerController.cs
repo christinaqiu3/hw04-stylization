@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -18,7 +19,27 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Escape))
+            QuitGame();
+
+        if (Input.GetKeyDown(KeyCode.R))
+            RestartGame();
+    }
+
+    public void QuitGame()
+    {
+    #if UNITY_EDITOR
+        // If we're in the Unity Editor, just stop play mode
+        UnityEditor.EditorApplication.isPlaying = false;
+    #else
+        // If we're in a build, quit the app
+        Application.Quit();
+    #endif
+    }
+    public void RestartGame()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.buildIndex);
     }
 
     void FixedUpdate()
