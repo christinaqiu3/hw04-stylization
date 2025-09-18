@@ -48,6 +48,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
             rb.AddForce(-rightDirection * movementIntensity, ForceMode.Acceleration);
         if (Input.GetKeyDown(KeyCode.Space))
-            rb.AddForce(Vector3.up, ForceMode.Impulse); 
+            rb.AddForce(Vector3.up * jumpIntensity, ForceMode.Impulse); 
     }
 }
