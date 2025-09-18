@@ -13,7 +13,7 @@ public class UIManager : MonoBehaviour
     public GameObject loseScreen;
 
     private int score = 0;
-    private float timer = 120f;
+    private float timer = 60f;
     private bool gameOver = false;
     private int winScore = 3;
 
