@@ -1863,6 +1863,7 @@ MonoBehaviour:
   timerText: {fileID: 48634511}
   winScreen: {fileID: 2129249355}
   loseScreen: {fileID: 837722418}
+  animator: {fileID: 2114681456}
 --- !u!1 &762286358
 GameObject:
   m_ObjectHideFlags: 0
@@ -4636,6 +4637,7 @@ GameObject:
   - component: {fileID: 2114681453}
   - component: {fileID: 2114681455}
   - component: {fileID: 2114681454}
+  - component: {fileID: 2114681456}
   m_Layer: 2
   m_Name: View
   m_TagString: Untagged
@@ -4708,6 +4710,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2114681452}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!95 &2114681456
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114681452}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 019829d450b2d450cb5a6fa008c13119, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2129249355
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     private float timer = 60f;
     private bool gameOver = false;
     private int winScore = 3;
+    public Animator animator;
 
     void Awake()
     {
@@ -46,6 +47,14 @@ public class UIManager : MonoBehaviour
             LoseGame();
         }
         UpdateTimerText();
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            GameObject.Find("Secondary Camera").SetActive(false);
+            animator.SetTrigger("TakePhotoTrigger");
+            // GameObject.Find("View").transform.localScale = new Vector3(.1f, .1f, .1f);
+            // GameObject.Find("View").transform.position += new Vector3(-.3f, -.2f, 0);
+        }
     }
     public void AddScore(int amount)
     {
